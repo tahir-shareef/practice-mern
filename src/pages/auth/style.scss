@@ -1,0 +1,16 @@
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  padding: 18px;
+  width: 100%;
+  max-width: 400px;
+  .MuiInput-root {
+    font-size: 20px;
+  }
+  .css-18lrjg1-MuiCircularProgress-root {
+    color: #7a7a7a;
+  }
+}
