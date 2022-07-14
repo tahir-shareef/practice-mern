@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ChatArea from "./components/partitions/ChatArea";
 import Authentication from "./pages/auth/Authentication";
-import Home from "./pages/auth/home/Home";
+import Home from "./pages/home/Home";
 
 const PageRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);

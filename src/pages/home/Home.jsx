@@ -1,12 +1,13 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Listbar from "../../../components/partitions/Listbar";
+import Listbar from "../../components/partitions/Listbar";
 import { Grid } from "@mui/material";
 import "./style.scss";
 
 const Home = () => {
   const location = useLocation();
   const isOnChatArea = location.pathname.includes("chat");
+  
   return (
     <>
       <Grid container className="home-grid-container">
