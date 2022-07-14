@@ -1,6 +1,6 @@
 import React from "react";
-import ChatList from "../chatlist/ChatList";
-import ListHeader from "../headers/ListHeader";
+import ChatList from "../../../components/chatlist/ChatList";
+import ListHeader from "../../../components/headers/ListHeader";
 const Listbar = () => {
   return (
     <>

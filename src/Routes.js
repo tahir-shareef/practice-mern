@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import ChatArea from "./components/partitions/ChatArea";
+import ChatArea from "./pages/partitions/chat/ChatArea";
 import Authentication from "./pages/auth/Authentication";
 import Home from "./pages/home/Home";
 

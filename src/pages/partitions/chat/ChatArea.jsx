@@ -1,5 +1,5 @@
 import React from "react";
-import ChatHeader from "../headers/ChatHeader";
+import ChatHeader from "../../../components/headers/ChatHeader";
 
 const ChatArea = () => {
   return (
