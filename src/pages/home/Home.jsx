@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Listbar from "../../components/partitions/Listbar";
+import Listbar from "../partitions/main/Listbar";
 import { Grid } from "@mui/material";
 import "./style.scss";
 
