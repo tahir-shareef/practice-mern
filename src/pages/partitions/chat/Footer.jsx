@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Grid, IconButton, TextField } from "@mui/material";
-import SmileIcon from "../../../assets/icons/face-smile-regular.svg";
 import "./style.scss";
 
 const Footer = () => {

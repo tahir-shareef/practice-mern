@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Box,
   Avatar,
@@ -13,6 +14,7 @@ import Logout from "@mui/icons-material/Logout";
 
 const ListHeader = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const { currentUser } = useSelector((state) => state.auth);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,7 +46,12 @@ const ListHeader = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar
+              sx={{ width: 32, height: 32 }}
+              src={currentUser.profileImage}
+            >
+              T
+            </Avatar>
           </IconButton>
         </Tooltip>
         <Menu

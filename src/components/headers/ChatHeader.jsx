@@ -1,6 +1,7 @@
 import { Box, Avatar, IconButton, Typography, Tooltip } from "@mui/material";
 
-const ChatHeader = () => {
+const ChatHeader = ({ user }) => {
+  const { name, profileImage, status } = user;
   return (
     <>
       <Box
@@ -17,13 +18,15 @@ const ChatHeader = () => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Tooltip title="Profile">
             <IconButton size="small" sx={{ mx: 1, mr: 0.5 }}>
-              <Avatar>M</Avatar>
+              <Avatar xs={{ background: "gray" }} src={profileImage}>
+                {name}
+              </Avatar>
             </IconButton>
           </Tooltip>{" "}
           <Box>
-            <Typography component={"span"}>Tahir Shareef</Typography>
+            <Typography component={"span"}>{name}</Typography>
             <Typography component={"p"} lineHeight="0.5" fontSize="10px">
-              online
+              {status}
             </Typography>
           </Box>
         </Box>

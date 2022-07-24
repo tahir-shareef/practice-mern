@@ -1,15 +1,27 @@
-import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
-import Conversation from "./Conversation";
+import Messages from "./Messages";
+import { Box } from "@mui/material";
+import { getConevrsation } from "../../../store/reducers/chats-slice";
 import Footer from "./Footer";
 import "./style.scss";
 
 const ChatArea = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const { messages, user } = useSelector((state) => state.chats.conversation);
+
+  useEffect(() => {
+    dispatch(getConevrsation(id));
+  }, [id, dispatch]);
+
   return (
     <Box className="chat-area">
-      <ChatHeader />
-      <Conversation />
+      <ChatHeader user={user} />
+      <Messages conversation={messages} />
       <Footer />
     </Box>
   );
