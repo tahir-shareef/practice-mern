@@ -10,8 +10,8 @@ const ChatHeader = () => {
           justifyContent: "space-between",
           px: 2,
           py: 1,
-          minHeight: "50px",
-          background: "#005286",
+          height: "58px",
+          background: "#040046",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>

@@ -29,7 +29,7 @@ const ListHeader = () => {
           justifyContent: "space-between",
           px: 2,
           py: 1,
-          background: "#005286",
+          background: "#040046",
           minHeight: "50px",
         }}
       >
