@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { Done, DoneAll } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
 const Messages = ({ conversation }) => {
@@ -22,8 +23,20 @@ const Messages = ({ conversation }) => {
               className={`message-row ${isSender ? "sender" : "reciever"}`}
               key={i}
             >
-              <Box className="message">{message.message}</Box>
-              <span>7:13PM</span>
+              <Box className="message">
+                {message.message}
+
+                {isSender ? (
+                  <div className="sender-info">
+                    <span className="sender-time">7:13 PM</span>
+                    <div className="delivered-status">
+                      <Done />
+                    </div>
+                  </div>
+                ) : (
+                  <span className="time">7:13 PM</span>
+                )}
+              </Box>
             </Box>
           );
         })}
