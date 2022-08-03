@@ -18,7 +18,7 @@
         display: flex;
         .message {
           max-width: 350px;
-          padding: 6px 47px 5px 8px;
+          padding: 6px 52px 5px 10px;
           border-radius: 10px;
           margin: 5px;
           font-size: 18px;
@@ -32,6 +32,12 @@
             color: #c0c0c0;
             display: flex;
             align-items: center;
+            height: 15px;
+            .delivered-status {
+              svg {
+                width: 14px;
+              }
+            }
           }
         }
         &.reciever {

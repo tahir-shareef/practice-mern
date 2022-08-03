@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Done, DoneAll } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
-const Messages = ({ conversation }) => {
+const Messages = ({ conversation, delivered, seen }) => {
   const { currentUser } = useSelector((state) => state.auth);
   const conversationRef = useRef();
 
@@ -30,7 +30,11 @@ const Messages = ({ conversation }) => {
                   <div className="sender-info">
                     <span className="sender-time">7:13 PM</span>
                     <div className="delivered-status">
-                      <Done />
+                      {delivered || seen ? (
+                        <DoneAll className={seen ? "seen" : ""} />
+                      ) : (
+                        <Done />
+                      )}
                     </div>
                   </div>
                 ) : (

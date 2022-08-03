@@ -3,8 +3,11 @@ import { Done, DoneAll } from "@mui/icons-material";
 import { formatAMPM } from "../../helperFunctions/timeformatter";
 import { NavLink } from "react-router-dom";
 import "./style.scss";
+import { useSelector } from "react-redux";
 
 const ChatItem = (props) => {
+  const { currentUser } = useSelector((state) => state.auth);
+  const isSender = currentUser.id === props.lastMsg.sender;
   return (
     <NavLink
       to={"/chat/" + props.index}
@@ -19,12 +22,12 @@ const ChatItem = (props) => {
           {/* Item right Side */}
           <Box className="chat-item-right">
             <Typography className="profile-name">{props.name}</Typography>
-            <Typography color="#d2d2d2">{props.lastMsg}</Typography>
+            <Typography color="#d2d2d2">{props.lastMsg.message}</Typography>
             <p className="time">{formatAMPM(Date.now())}</p>
             <Box className="delivereTick">
               {props.newMsg ? (
                 <Box className="new-msg"></Box>
-              ) : props.tick || props.delivered || props.seen ? (
+              ) : isSender ? (
                 props.delivered || props.seen ? (
                   <DoneAll className={props.seen ? "seen" : ""} />
                 ) : (
