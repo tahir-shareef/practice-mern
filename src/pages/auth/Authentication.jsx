@@ -113,6 +113,7 @@ const Authentication = () => {
       {step === 1 && (
         <Grow in={true} timeout={1000}>
           <div>
+            <Typography>Login</Typography>
             <Typography fontSize={13} mb={3}>
               Welcome again 😀 plz verify yourself !
             </Typography>

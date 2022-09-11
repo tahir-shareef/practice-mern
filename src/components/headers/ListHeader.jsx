@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/reducers/auth-slice";
 import {
   Box,
   Avatar,
@@ -13,6 +14,7 @@ import {
 import Logout from "@mui/icons-material/Logout";
 
 const ListHeader = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const { currentUser } = useSelector((state) => state.auth);
   const open = Boolean(anchorEl);
@@ -22,6 +24,11 @@ const ListHeader = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <Box
@@ -89,7 +96,7 @@ const ListHeader = () => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
+          <MenuItem onClick={logoutHandler}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

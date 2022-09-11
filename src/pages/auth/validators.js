@@ -45,11 +45,16 @@ export const validators = {
     },
 
     (data) => {
-      const password = data.password;
+      const { password, confirmPassword } = data;
       if (password && password.length >= 6) {
-        return false;
+        if (password === confirmPassword) {
+          return false;
+        } else {
+          return "password does'nt match";
+        }
+      } else {
+        return "Please Enter password with minimum 6 characters";
       }
-      return "Please Enter password with minimum 6 characters";
     },
   ],
 };
