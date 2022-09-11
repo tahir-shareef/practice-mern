@@ -32,13 +32,24 @@ export const checkIfUserCanRegister = createAsyncThunk(
     try {
       const response = await axios.get(
         apiUrl("/user/canregister/" + userName),
-        { userName },
+        undefined,
         { headers: {} }
       );
       return response.data;
     } catch (e) {
-      alert(e);
       return thunkApi.rejectWithValue();
     }
   }
 );
+
+export const getMe = createAsyncThunk("getMe", async ({ id }, thunkApi) => {
+  console.log(id);
+  try {
+    const response = await axios.get(apiUrl("/user/getme/" + id), undefined, {
+      headers: {},
+    });
+    return response.data;
+  } catch (e) {
+    return thunkApi.rejectWithValue();
+  }
+});

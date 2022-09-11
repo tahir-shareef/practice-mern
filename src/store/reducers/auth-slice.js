@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { users } from "../../temp/chatsUsers";
-import { register, login } from "../actions/auth";
+import { register, login, getMe } from "../actions/auth";
 import cookie from "react-cookies";
 
 const authSlice = createSlice({
@@ -26,9 +26,21 @@ const authSlice = createSlice({
       });
       state.isLoggedIn = true;
     });
+
+    // getting user's data
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      const { user } = action.payload;
+      state.currentUser = user;
+      state.isLoggedIn = true;
+    });
+    builder.addCase(getMe.rejected, (state) => {
+      state.currentUser = null;
+      cookie.remove("jwt");
+      state.isLoggedIn = false;
+    });
   },
   reducers: {
-    logout: (state, action) => {
+    logout: (state) => {
       cookie.remove("jwt");
       state.isLoggedIn = false;
     },

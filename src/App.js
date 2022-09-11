@@ -1,10 +1,13 @@
-import "./App.css";
 import Routes from "./Routes";
+import "./App.css";
+import UserAccess from "./access-control/UserAccess";
 
 function App() {
   return (
     <div className="App">
-      <Routes />
+      <UserAccess>
+        <Routes />
+      </UserAccess>
     </div>
   );
 }
