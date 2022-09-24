@@ -1,13 +1,13 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Listbar from "../partitions/main/Listbar";
+import MainPage from "../partitions/main/MainPage";
 import { Grid } from "@mui/material";
 import "./style.scss";
 
 const Home = () => {
   const location = useLocation();
   const isOnChatArea = location.pathname.includes("chat");
-  
+
   return (
     <>
       <Grid container className="home-grid-container">
@@ -18,7 +18,7 @@ const Home = () => {
           display={{ xs: isOnChatArea ? "none" : "block", md: "block" }}
           className="home-grid left-section"
         >
-          <Listbar />
+          <MainPage />
         </Grid>
         <Grid
           item

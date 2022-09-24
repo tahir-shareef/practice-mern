@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Box, Button, CircularProgress, Grow, Typography } from "@mui/material";
 import TextField from "../../components/TextFields/TextField";
-import { login } from "../../store/reducers/auth-slice";
+import PasswordInput from "../../components/common/PasswordInput";
 import { useDispatch } from "react-redux";
 import { validators } from "./validators";
+import {
+  checkIfUserCanRegister,
+  login,
+  register,
+} from "../../store/actions/auth";
 import "./style.scss";
 
 const Authentication = () => {
@@ -13,33 +18,42 @@ const Authentication = () => {
     name: "",
     userName: "",
     password: "",
+    confirmPassword: "",
   };
   const [data, setData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [step, setStep] = useState(0);
-  const [newUser] = useState(true);
+  const [newUser, setNewUser] = useState(true);
 
-  const loginStep = step === 1;
-  const registerStep = step === 2;
+  const finalLoginStep = step === 1;
+  const finalRegisterStep = step === 2;
 
-  const registerHandler = () => {
+  const registerHandler = async () => {
     setLoading("Creating your account.. ❤ 🔥");
-    // setData(initialState);
-    setTimeout(() => {
-      dispatch(login());
-    }, 2000);
+    try {
+      await dispatch(register(data)).unwrap();
+    } catch (e) {
+      setError(e);
+      setLoading(false);
+    }
   };
 
-  const loginHanlder = () => {
+  const loginHanlder = async () => {
     setLoading("Signing in to your account.. ❤");
-    // setData(initialState);
-    setTimeout(() => {
-      dispatch(login());
-    }, 2000);
+    try {
+      await dispatch(login(data)).unwrap();
+    } catch (e) {
+      setError(e);
+      setLoading(false);
+    }
   };
 
-  const changeStepHandler = () => {
+  const changeStepHandler = (_, back = false) => {
+    setError(false);
+    if (back) {
+      return setStep((prev) => prev - 1);
+    }
     if (newUser) {
       // Register
       const error = validators.registerValidators[step](data);
@@ -47,7 +61,7 @@ const Authentication = () => {
         setError(error);
       } else {
         setError(false);
-        if (registerStep) {
+        if (finalRegisterStep) {
           registerHandler();
         } else setStep(step + 1);
       }
@@ -58,10 +72,27 @@ const Authentication = () => {
         setError(error);
       } else {
         setError(false);
-        if (loginStep) {
+        if (finalLoginStep) {
           loginHanlder();
         } else setStep(step + 1);
       }
+    }
+  };
+
+  const checkifNewUserHandler = () => {
+    const error = validators.registerValidators[step](data);
+    if (error) {
+      setError(error);
+    } else {
+      setLoading(true);
+      dispatch(checkIfUserCanRegister({ userName: data.userName })).then(
+        (res) => {
+          const { canRegister } = res.payload;
+          setNewUser(canRegister);
+          setLoading(false);
+          changeStepHandler();
+        }
+      );
     }
   };
 
@@ -74,6 +105,17 @@ const Authentication = () => {
       ...prev,
       [name]: value,
     }));
+    setError(false);
+  };
+
+  const handleEnter = (e) => {
+    if (e.code === "Enter") {
+      if (step === 0 && !loading) {
+        checkifNewUserHandler();
+      } else {
+        changeStepHandler();
+      }
+    }
   };
 
   const loginFields = (
@@ -81,14 +123,20 @@ const Authentication = () => {
       {step === 1 && (
         <Grow in={true} timeout={1000}>
           <div>
-            <TextField
+            <Typography>Login</Typography>
+            <Typography fontSize={13} mb={3}>
+              Welcome again 😀 plz verify yourself !
+            </Typography>
+            <PasswordInput
               autoFocus
               fullWidth
               placeholder="Enter your Password"
               value={data.password}
               name="password"
               onChange={onChangeHandler}
-              error={error}
+              onKeyDown={handleEnter}
+              error={!!error}
+              helperText={error}
             />
           </div>
         </Grow>
@@ -101,6 +149,10 @@ const Authentication = () => {
       {step === 1 && (
         <Grow in={true} timeout={1000}>
           <div>
+            <Typography>Register</Typography>
+            <Typography fontSize={13} mb={3}>
+              you are not in our record 😳 you're most welcome !
+            </Typography>
             <TextField
               autoFocus
               fullWidth
@@ -108,6 +160,7 @@ const Authentication = () => {
               placeholder="What's Your Name ?"
               name="name"
               onChange={onChangeHandler}
+              onKeyDown={handleEnter}
               error={error}
             />
           </div>
@@ -117,23 +170,30 @@ const Authentication = () => {
       {step === 2 && (
         <Grow in={true} timeout={1000}>
           <div>
-            <TextField
+            <Typography fontSize={13} mb={3}>
+              Now Create a Password 💪 and register yourself !
+            </Typography>
+            <PasswordInput
               autoFocus
               fullWidth
               placeholder="Create a Password"
               value={data.password}
               name="password"
               onChange={onChangeHandler}
-              error={error}
+              onKeyDown={handleEnter}
+              error={!!error}
+              helperText={error}
               style={{ marginBottom: "20px" }}
             />
-            <TextField
+            <PasswordInput
               fullWidth
               placeholder="Confirm Password"
-              value={data.password}
-              name="password"
+              value={data.confirmPassword}
+              name="confirmPassword"
               onChange={onChangeHandler}
-              error={error}
+              onKeyDown={handleEnter}
+              error={!!error}
+              helperText={error}
             />
           </div>
         </Grow>
@@ -148,6 +208,7 @@ const Authentication = () => {
           {step === 0 && (
             <Grow in={true} timeout={1000}>
               <div>
+                <Typography marginBottom={2}>Chat App</Typography>
                 <TextField
                   autoFocus
                   fullWidth
@@ -155,6 +216,7 @@ const Authentication = () => {
                   placeholder="Enter Your Username"
                   name="userName"
                   onChange={onChangeHandler}
+                  onKeyDown={handleEnter}
                   error={error}
                 />
                 <Typography variant="caption" color="#8fa100">
@@ -179,14 +241,31 @@ const Authentication = () => {
             <CircularProgress size={30} />
             <p>{loading}</p>
           </Box>
-        ) : (
-          <Button onClick={changeStepHandler}>
-            {newUser ? (
-              <>{registerStep ? "Finish" : "Continue"}</>
-            ) : (
-              <>{loginStep ? "Login" : "Continue"}</>
-            )}
+        ) : step === 0 ? (
+          <Button
+            onClick={checkifNewUserHandler}
+            sx={{ justifyContent: "flex-end" }}
+          >
+            {loading ? <CircularProgress size={30} /> : "Continue"}
           </Button>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: 1,
+              mt: 2,
+            }}
+          >
+            <Button onClick={() => changeStepHandler(null, true)}>Back</Button>
+            <Button onClick={changeStepHandler}>
+              {newUser ? (
+                <>{finalRegisterStep ? "Register" : "Continue"}</>
+              ) : (
+                <>{finalLoginStep ? "Login" : "Continue"}</>
+              )}
+            </Button>
+          </Box>
         )}
       </Box>
     </Box>

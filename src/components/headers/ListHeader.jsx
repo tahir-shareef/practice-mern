@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/reducers/auth-slice";
 import {
   Box,
   Avatar,
@@ -11,7 +13,8 @@ import {
 } from "@mui/material";
 import Logout from "@mui/icons-material/Logout";
 
-const ListHeader = () => {
+const ListHeader = (props) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,6 +23,12 @@ const ListHeader = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { user } = props;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <Box
@@ -29,7 +38,7 @@ const ListHeader = () => {
           justifyContent: "space-between",
           px: 2,
           py: 1,
-          background: "#005286",
+          background: "#040046",
           minHeight: "50px",
         }}
       >
@@ -44,7 +53,9 @@ const ListHeader = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }} src={user.profileImage}>
+              T
+            </Avatar>
           </IconButton>
         </Tooltip>
         <Menu
@@ -82,7 +93,7 @@ const ListHeader = () => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
+          <MenuItem onClick={logoutHandler}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
