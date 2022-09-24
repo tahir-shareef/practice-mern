@@ -7,29 +7,34 @@ import { useSelector } from "react-redux";
 
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
-  const isSender = currentUser.id === props.lastMsg.sender;
+  const { name, profileImage, lastMsg, seen, delivered, newMsg, _id } =
+    props.chat;
+
+  // const isSender = currentUser.id === lastMsg.sender;
+  const isSender = currentUser.id === lastMsg;
   return (
     <NavLink
-      to={"/chat/" + props.index}
+      to={`chat/${_id}`}
       className={(nav) => `${nav.isActive ? "active" : ""} chat-link`}
     >
       <Button className="chat-item">
         <Box className="chat-item-wrapper">
           {/* Item left Side (profile) */}
           <Box className="chat-item-left">
-            <Avatar src={props.profileImage} className="chat-item-avatar" />
+            <Avatar src={profileImage} className="chat-item-avatar" />
           </Box>
           {/* Item right Side */}
           <Box className="chat-item-right">
-            <Typography className="profile-name">{props.name}</Typography>
-            <Typography color="#d2d2d2">{props.lastMsg.message}</Typography>
+            <Typography className="profile-name">{name}</Typography>
+            {/* <Typography color="#d2d2d2">{lastMsg.message}</Typography> */}
+            <Typography color="#d2d2d2">{lastMsg}</Typography>
             <p className="time">{formatAMPM(Date.now())}</p>
             <Box className="delivereTick">
-              {props.newMsg ? (
+              {newMsg ? (
                 <Box className="new-msg"></Box>
               ) : isSender ? (
-                props.delivered || props.seen ? (
-                  <DoneAll className={props.seen ? "seen" : ""} />
+                delivered || seen ? (
+                  <DoneAll className={seen ? "seen" : ""} />
                 ) : (
                   <Done />
                 )

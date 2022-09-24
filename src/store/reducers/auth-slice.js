@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { users } from "../../temp/chatsUsers";
 import { register, login, getMe } from "../actions/auth";
 import cookie from "react-cookies";
 
@@ -7,11 +6,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: cookie.load("jwt") !== undefined,
-    currentUser: users[0],
+    currentUser: null,
+    chats: [],
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
-      const { user, token } = action.payload;
+      const { user, token, chats } = action.payload;
+      state.chats = chats;
       state.currentUser = user;
       cookie.save("jwt", token, {
         path: "/",
@@ -19,8 +20,9 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const { user, token } = action.payload;
+      const { user, token, chats } = action.payload;
       state.currentUser = user;
+      state.chats = chats;
       cookie.save("jwt", token, {
         path: "/",
       });
@@ -29,19 +31,22 @@ const authSlice = createSlice({
 
     // getting user's data
     builder.addCase(getMe.fulfilled, (state, action) => {
-      const { user } = action.payload;
+      const { user, chats } = action.payload;
       state.currentUser = user;
+      state.chats = chats;
       state.isLoggedIn = true;
     });
     builder.addCase(getMe.rejected, (state) => {
-      state.currentUser = null;
       cookie.remove("jwt");
+      state.currentUser = null;
+      state.chats = [];
       state.isLoggedIn = false;
     });
   },
   reducers: {
     logout: (state) => {
       cookie.remove("jwt");
+      state.currentUser = null;
       state.isLoggedIn = false;
     },
   },

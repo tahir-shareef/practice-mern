@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, CircularProgress, Grow, Typography } from "@mui/material";
 import TextField from "../../components/TextFields/TextField";
+import PasswordInput from "../../components/common/PasswordInput";
 import { useDispatch } from "react-redux";
 import { validators } from "./validators";
 import {
@@ -8,7 +9,6 @@ import {
   login,
   register,
 } from "../../store/actions/auth";
-import PasswordInput from "../../components/common/PasswordInput";
 import "./style.scss";
 
 const Authentication = () => {
@@ -108,6 +108,16 @@ const Authentication = () => {
     setError(false);
   };
 
+  const handleEnter = (e) => {
+    if (e.code === "Enter") {
+      if (step === 0 && !loading) {
+        checkifNewUserHandler();
+      } else {
+        changeStepHandler();
+      }
+    }
+  };
+
   const loginFields = (
     <>
       {step === 1 && (
@@ -124,6 +134,7 @@ const Authentication = () => {
               value={data.password}
               name="password"
               onChange={onChangeHandler}
+              onKeyDown={handleEnter}
               error={!!error}
               helperText={error}
             />
@@ -149,6 +160,7 @@ const Authentication = () => {
               placeholder="What's Your Name ?"
               name="name"
               onChange={onChangeHandler}
+              onKeyDown={handleEnter}
               error={error}
             />
           </div>
@@ -168,6 +180,7 @@ const Authentication = () => {
               value={data.password}
               name="password"
               onChange={onChangeHandler}
+              onKeyDown={handleEnter}
               error={!!error}
               helperText={error}
               style={{ marginBottom: "20px" }}
@@ -178,6 +191,7 @@ const Authentication = () => {
               value={data.confirmPassword}
               name="confirmPassword"
               onChange={onChangeHandler}
+              onKeyDown={handleEnter}
               error={!!error}
               helperText={error}
             />
@@ -202,6 +216,7 @@ const Authentication = () => {
                   placeholder="Enter Your Username"
                   name="userName"
                   onChange={onChangeHandler}
+                  onKeyDown={handleEnter}
                   error={error}
                 />
                 <Typography variant="caption" color="#8fa100">

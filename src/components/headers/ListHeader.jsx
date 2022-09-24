@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "../../store/reducers/auth-slice";
 import {
   Box,
@@ -13,10 +13,9 @@ import {
 } from "@mui/material";
 import Logout from "@mui/icons-material/Logout";
 
-const ListHeader = () => {
+const ListHeader = (props) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
-  const { currentUser } = useSelector((state) => state.auth);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,6 +23,7 @@ const ListHeader = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { user } = props;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -53,10 +53,7 @@ const ListHeader = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar
-              sx={{ width: 32, height: 32 }}
-              src={currentUser.profileImage}
-            >
+            <Avatar sx={{ width: 32, height: 32 }} src={user.profileImage}>
               T
             </Avatar>
           </IconButton>

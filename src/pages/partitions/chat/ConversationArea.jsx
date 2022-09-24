@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
 import Messages from "./Messages";
 import { Box } from "@mui/material";
-import { getConevrsation } from "../../../store/reducers/chats-slice";
+import { getChatUserFromLocal } from "../../../store/reducers/chats-slice";
 import Footer from "./Footer";
 import "./style.scss";
 
@@ -15,7 +15,8 @@ const ChatArea = () => {
   const { messages, user } = useSelector((state) => state.chats.conversation);
 
   useEffect(() => {
-    dispatch(getConevrsation(id));
+    // dispatch(getConevrsation(id));
+    dispatch(getChatUserFromLocal({ id }));
   }, [id, dispatch]);
 
   return (

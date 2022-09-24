@@ -43,7 +43,6 @@ export const checkIfUserCanRegister = createAsyncThunk(
 );
 
 export const getMe = createAsyncThunk("getMe", async ({ id }, thunkApi) => {
-  console.log(id);
   try {
     const response = await axios.get(apiUrl("/user/getme/" + id), undefined, {
       headers: {},

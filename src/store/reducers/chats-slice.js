@@ -5,7 +5,6 @@ import { users } from "../../temp/chatsUsers";
 const chat = createSlice({
   name: "chat",
   initialState: {
-    list: users,
     conversation: {
       messages: [],
       user: {},
@@ -20,7 +19,13 @@ const chat = createSlice({
     sendMessage(state, action) {
       state.conversation.messages.push(action.payload);
     },
+    getChatUserFromLocal(state, action) {
+      const searchUserId = action.payload.id;
+      const chatuser = state.list.find((user) => user._id === searchUserId);
+      state.conversation.user = chatuser;
+    },
   },
 });
 export default chat.reducer;
-export const { getConevrsation, sendMessage } = chat.actions;
+export const { getConevrsation, sendMessage, getChatUserFromLocal } =
+  chat.actions;
