@@ -25,11 +25,12 @@ const chat = createSlice({
 
     builder.addCase(getMe.fulfilled, (state, action) => {
       const { chats } = action.payload.user;
+      console.log(chats);
       state.chats = chats;
     });
   },
   reducers: {
-    getConevrsation(state, action) {
+    getConversation(state, action) {
       const indexId = action.payload;
       state.conversation.messages = conversation[indexId];
       state.conversation.user = users[indexId];
@@ -40,4 +41,4 @@ const chat = createSlice({
   },
 });
 export default chat.reducer;
-export const { getConevrsation, sendMessage } = chat.actions;
+export const { getConversation, sendMessage } = chat.actions;

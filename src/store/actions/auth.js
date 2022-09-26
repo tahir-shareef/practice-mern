@@ -51,9 +51,9 @@ export const checkIfUserCanRegister = createAsyncThunk(
   }
 );
 
-export const getMe = createAsyncThunk("getMe", async ({ id }, thunkApi) => {
+export const getMe = createAsyncThunk("getMe", async (data, thunkApi) => {
   try {
-    const response = await axios.get(apiUrl("/user/getme/" + id), axiosConfig);
+    const response = await axios.get(apiUrl("/user/getme"), axiosConfig);
     return response.data;
   } catch (e) {
     return thunkApi.rejectWithValue();

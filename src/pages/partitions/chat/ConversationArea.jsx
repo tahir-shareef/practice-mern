@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
-import { getchatuser } from "../../../store/actions/chats";
+import { getchatuser, getConversation } from "../../../store/actions/chats";
 import Messages from "./Messages";
 import { Box, Typography } from "@mui/material";
 import Footer from "./Footer";
@@ -14,13 +14,21 @@ const ChatArea = () => {
   const { messages } = useSelector((state) => state.chats.conversation);
   const { chats } = useSelector((state) => state.auth.currentUser);
   const [loading, setLoading] = useState(true);
+  const [messageLoading, setmessageLoading] = useState(true);
   const [chatUser, setChatUser] = useState(null);
+
+  const getUserConversation = () => {
+    dispatch(getConversation({ id })).then((res) => {
+      console.log(res);
+    });
+  };
 
   useEffect(() => {
     // getting chat if it find from local
     const chatFromLocal = chats.find((chatUser) => chatUser._id === id);
     if (chatFromLocal && chatFromLocal._id) {
       setChatUser(chatFromLocal);
+      getUserConversation();
       setLoading(false);
     } else {
       // if not on local then get it from server
@@ -31,6 +39,7 @@ const ChatArea = () => {
         } else {
           const user = res.payload.user;
           setChatUser(user);
+          getUserConversation();
           setLoading(false);
         }
       });
@@ -48,7 +57,7 @@ const ChatArea = () => {
           {chatUser && chatUser._id ? (
             <>
               <ChatHeader user={chatUser} />
-              <Messages conversation={messages} />
+              <Messages conversation={messages} loading={messageLoading} />
               <Footer />
             </>
           ) : (

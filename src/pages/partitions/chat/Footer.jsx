@@ -17,7 +17,8 @@ const Footer = () => {
         message: text,
         receiverId,
       };
-      dispatch(sendMessage(message));
+      console.log(message);
+      // dispatch(sendMessage(message));
       setText("");
     }
   };

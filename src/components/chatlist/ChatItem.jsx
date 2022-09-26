@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
   const { name, profileImage, lastMsg, seen, delivered, newMsg, _id } =
-    props.chat;
+    props.chat.user;
 
   // const isSender = currentUser._id === lastMsg.sender;
   const isSender = currentUser._id === lastMsg;
