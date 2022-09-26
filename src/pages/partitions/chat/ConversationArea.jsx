@@ -1,29 +1,65 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
+import { getchatuser } from "../../../store/actions/chats";
 import Messages from "./Messages";
-import { Box } from "@mui/material";
-import { getChatUserFromLocal } from "../../../store/reducers/chats-slice";
+import { Box, Typography } from "@mui/material";
 import Footer from "./Footer";
 import "./style.scss";
 
 const ChatArea = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-
-  const { messages, user } = useSelector((state) => state.chats.conversation);
+  const { messages } = useSelector((state) => state.chats.conversation);
+  const { chats } = useSelector((state) => state.auth.currentUser);
+  const [loading, setLoading] = useState(true);
+  const [chatUser, setChatUser] = useState(null);
 
   useEffect(() => {
-    // dispatch(getConevrsation(id));
-    dispatch(getChatUserFromLocal({ id }));
-  }, [id, dispatch]);
+    // getting chat if it find from local
+    const chatFromLocal = chats.find((chatUser) => chatUser._id === id);
+    if (chatFromLocal && chatFromLocal._id) {
+      setChatUser(chatFromLocal);
+      setLoading(false);
+    } else {
+      // if not on local then get it from server
+      dispatch(getchatuser({ id })).then((res) => {
+        if (res.error) {
+          setLoading(false);
+          setChatUser(null);
+        } else {
+          const user = res.payload.user;
+          setChatUser(user);
+          setLoading(false);
+        }
+      });
+    }
+  }, [id, dispatch, chats]);
 
   return (
     <Box className="chat-area">
-      <ChatHeader user={user} />
-      <Messages conversation={messages} />
-      <Footer />
+      {loading ? (
+        <Box className="page-center">
+          <Typography>Loading your chat..</Typography>
+        </Box>
+      ) : (
+        <>
+          {chatUser && chatUser._id ? (
+            <>
+              <ChatHeader user={chatUser} />
+              <Messages conversation={messages} />
+              <Footer />
+            </>
+          ) : (
+            <Box className="page-center">
+              <Typography sx={{ color: "#ff6868" }}>
+                Sorry no chat user were found !
+              </Typography>
+            </Box>
+          )}
+        </>
+      )}
     </Box>
   );
 };

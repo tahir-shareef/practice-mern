@@ -17,7 +17,7 @@ const Messages = ({ conversation, delivered, seen }) => {
     <Box className="conversation-wrapper">
       <Box className="conversation" ref={conversationRef}>
         {conversation.map((message, i) => {
-          const isSender = message.sender === currentUser.id;
+          const isSender = message.sender === currentUser._id;
           return (
             <Box
               className={`message-row ${isSender ? "sender" : "reciever"}`}

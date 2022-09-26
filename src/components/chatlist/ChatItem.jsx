@@ -10,8 +10,8 @@ const ChatItem = (props) => {
   const { name, profileImage, lastMsg, seen, delivered, newMsg, _id } =
     props.chat;
 
-  // const isSender = currentUser.id === lastMsg.sender;
-  const isSender = currentUser.id === lastMsg;
+  // const isSender = currentUser._id === lastMsg.sender;
+  const isSender = currentUser._id === lastMsg;
   return (
     <NavLink
       to={`chat/${_id}`}

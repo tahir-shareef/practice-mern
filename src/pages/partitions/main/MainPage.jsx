@@ -4,7 +4,8 @@ import ChatList from "../../../components/chatlist/ChatList";
 import ListHeader from "../../../components/headers/ListHeader";
 
 const MainPage = () => {
-  const { currentUser, chats } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state.auth);
+  const { chats } = useSelector((state) => state.chats);
 
   return (
     <>

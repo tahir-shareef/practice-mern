@@ -43,7 +43,7 @@ const ListHeader = (props) => {
         }}
       >
         <Typography sx={{ minWidth: 100 }}>Chat App</Typography>
-        <Typography sx={{ minWidth: 100 }}>Chats</Typography>
+        <Typography sx={{ minWidth: 100 }}>{user.name}</Typography>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}

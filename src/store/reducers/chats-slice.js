@@ -1,14 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { conversation } from "../../temp/conversation";
 import { users } from "../../temp/chatsUsers";
+import { getMe, login, register } from "../actions/auth";
 
 const chat = createSlice({
   name: "chat",
   initialState: {
+    chats: [],
     conversation: {
       messages: [],
       user: {},
     },
+  },
+  extraReducers: (builder) => {
+    // Getting chats list for main view from the following fullfills
+    builder.addCase(register.fulfilled, (state, action) => {
+      const { chats } = action.payload.user;
+      state.chats = chats;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      const { chats } = action.payload.user;
+      state.chats = chats;
+    });
+
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      const { chats } = action.payload.user;
+      state.chats = chats;
+    });
   },
   reducers: {
     getConevrsation(state, action) {
@@ -19,13 +37,7 @@ const chat = createSlice({
     sendMessage(state, action) {
       state.conversation.messages.push(action.payload);
     },
-    getChatUserFromLocal(state, action) {
-      const searchUserId = action.payload.id;
-      const chatuser = state.list.find((user) => user._id === searchUserId);
-      state.conversation.user = chatuser;
-    },
   },
 });
 export default chat.reducer;
-export const { getConevrsation, sendMessage, getChatUserFromLocal } =
-  chat.actions;
+export const { getConevrsation, sendMessage } = chat.actions;
