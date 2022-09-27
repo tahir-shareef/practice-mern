@@ -1,24 +1,13 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { sendMessage } from "../../../store/reducers/chats-slice";
 import { Box, Grid, IconButton, TextField } from "@mui/material";
 import "./style.scss";
 
-const Footer = () => {
+const Footer = (props) => {
   const [text, setText] = useState("");
-  const dispatch = useDispatch();
-  const { id: receiverId } = useParams();
 
-  const sendMessageHandler = (e) => {
-    console.log("sending message to", receiverId);
+  const sendMessageHandler = () => {
     if (text) {
-      const message = {
-        message: text,
-        receiverId,
-      };
-      console.log(message);
-      // dispatch(sendMessage(message));
+      props.onSend(text);
       setText("");
     }
   };

@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
 import { Done, DoneAll } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
-const Messages = ({ conversation, delivered, seen, loading }) => {
-  const { currentUser } = useSelector((state) => state.auth);
+const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
   const conversationRef = useRef();
 
   useEffect(() => {

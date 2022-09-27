@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../../../components/headers/ChatHeader";
-import { getchatuser, getConversation } from "../../../store/actions/chats";
+import {
+  getchatuser,
+  getConversation,
+  sendMessage,
+} from "../../../store/actions/chats";
 import Messages from "./Messages";
 import { Box, Typography } from "@mui/material";
 import Footer from "./Footer";
 import "./style.scss";
+import { updateMessageToLocal } from "../../../store/reducers/chats-slice";
 
 const ChatArea = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { messages } = useSelector((state) => state.chats.conversation);
-  const { chats } = useSelector((state) => state.auth.currentUser);
+  const { currentUser } = useSelector((state) => state.auth);
+  const { chats } = currentUser;
   const [loading, setLoading] = useState(true);
   const [messageLoading, setmessageLoading] = useState(true);
   const [chatUser, setChatUser] = useState(null);
-
-  const getUserConversation = () => {
-    dispatch(getConversation({ id })).then((res) => {
-      console.log(res);
-    });
-  };
 
   useEffect(() => {
     // getting chat if it find from local
@@ -46,6 +46,28 @@ const ChatArea = () => {
     }
   }, [id, dispatch, chats]);
 
+  const getUserConversation = () => {
+    dispatch(getConversation({ id })).then((res) => {
+      console.log(res);
+      setmessageLoading(false);
+    });
+  };
+
+  const requestMessage = (message) => {
+    const messageObj = {
+      message,
+      id,
+    };
+    dispatch(sendMessage(messageObj));
+    // updating message locally
+    dispatch(
+      updateMessageToLocal({
+        ...messageObj,
+        sender: currentUser._id,
+      })
+    );
+  };
+
   return (
     <Box className="chat-area">
       {loading ? (
@@ -57,8 +79,12 @@ const ChatArea = () => {
           {chatUser && chatUser._id ? (
             <>
               <ChatHeader user={chatUser} />
-              <Messages conversation={messages} loading={messageLoading} />
-              <Footer />
+              <Messages
+                currentUser={currentUser}
+                conversation={messages}
+                loading={messageLoading}
+              />
+              <Footer onSend={requestMessage} />
             </>
           ) : (
             <Box className="page-center">

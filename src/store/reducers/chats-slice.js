@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { conversation } from "../../temp/conversation";
 import { users } from "../../temp/chatsUsers";
 import { getMe, login, register } from "../actions/auth";
+import { getConversation } from "../actions/chats";
 
 const chat = createSlice({
   name: "chat",
@@ -25,8 +26,21 @@ const chat = createSlice({
 
     builder.addCase(getMe.fulfilled, (state, action) => {
       const { chats } = action.payload.user;
-      console.log(chats);
       state.chats = chats;
+    });
+
+    builder.addCase(getConversation.fulfilled, (state, action) => {
+      const { conversation } = action.payload;
+      if (conversation) {
+        state.conversation = {
+          user: state.conversation.user,
+          ...conversation,
+        };
+      } else {
+        state.conversation = {
+          messages: [],
+        };
+      }
     });
   },
   reducers: {
@@ -35,10 +49,10 @@ const chat = createSlice({
       state.conversation.messages = conversation[indexId];
       state.conversation.user = users[indexId];
     },
-    sendMessage(state, action) {
+    updateMessageToLocal(state, action) {
       state.conversation.messages.push(action.payload);
     },
   },
 });
 export default chat.reducer;
-export const { getConversation, sendMessage } = chat.actions;
+export const { sendMessage, updateMessageToLocal } = chat.actions;

@@ -30,10 +30,11 @@ export const getchatuser = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   "sendMessage",
-  async ({ id }, thunkApi) => {
+  async ({ id, message }, thunkApi) => {
     try {
       const response = await axios.post(
         apiUrl("/chats/sendmessage/" + id),
+        { message },
         axiosConfig
       );
       return response.data;
