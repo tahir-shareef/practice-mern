@@ -3,13 +3,17 @@ import axios from "axios";
 import cookie from "react-cookies";
 import { apiUrl } from "../../url";
 
-const jwt = cookie.load("jwt");
+const getAxiosConfig = () => {
+  const jwt = cookie.load("jwt");
 
-const axiosConfig = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${jwt}`,
-  },
+  const axiosConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  };
+
+  return axiosConfig;
 };
 
 export const getchatuser = createAsyncThunk(
@@ -18,7 +22,7 @@ export const getchatuser = createAsyncThunk(
     try {
       const response = await axios.get(
         apiUrl("/chats/getuser/" + id),
-        axiosConfig
+        getAxiosConfig()
       );
       return response.data;
     } catch (e) {
@@ -35,7 +39,7 @@ export const sendMessage = createAsyncThunk(
       const response = await axios.post(
         apiUrl("/chats/sendmessage/" + id),
         { message },
-        axiosConfig
+        getAxiosConfig()
       );
       return response.data;
     } catch (e) {
@@ -51,7 +55,7 @@ export const getConversation = createAsyncThunk(
     try {
       const response = await axios.get(
         apiUrl("/chats/getconversation/" + id),
-        axiosConfig
+        getAxiosConfig()
       );
       return response.data;
     } catch (e) {

@@ -33,7 +33,6 @@ const chat = createSlice({
       const { conversation } = action.payload;
       if (conversation) {
         state.conversation = {
-          user: state.conversation.user,
           ...conversation,
         };
       } else {
@@ -50,7 +49,15 @@ const chat = createSlice({
       state.conversation.user = users[indexId];
     },
     updateMessageToLocal(state, action) {
-      state.conversation.messages.push(action.payload);
+      const messageObj = action.payload;
+      state.conversation.messages.push(messageObj);
+
+      const chat = state.chats.find(
+        (chat) => chat?.user?._id === messageObj.id
+      );
+      if (chat) {
+        chat.lastMessage = messageObj;
+      }
     },
   },
 });

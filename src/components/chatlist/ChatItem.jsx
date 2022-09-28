@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 
 const ChatItem = (props) => {
   const { currentUser } = useSelector((state) => state.auth);
-  const { name, profileImage, lastMsg, seen, delivered, newMsg, _id } =
-    props.chat.user;
+  const { lastMessage } = props.chat;
+  const { name, profileImage, seen, delivered, newMsg, _id } = props.chat.user;
 
-  // const isSender = currentUser._id === lastMsg.sender;
-  const isSender = currentUser._id === lastMsg;
+  const isSender = currentUser._id === lastMessage.sender;
   return (
     <NavLink
       to={`chat/${_id}`}
@@ -26,9 +25,8 @@ const ChatItem = (props) => {
           {/* Item right Side */}
           <Box className="chat-item-right">
             <Typography className="profile-name">{name}</Typography>
-            {/* <Typography color="#d2d2d2">{lastMsg.message}</Typography> */}
-            <Typography color="#d2d2d2">{lastMsg}</Typography>
-            <p className="time">{formatAMPM(Date.now())}</p>
+            <Typography color="#d2d2d2">{lastMessage.message}</Typography>
+            <p className="time">{formatAMPM(lastMessage.createdAt)}</p>
             <Box className="delivereTick">
               {newMsg ? (
                 <Box className="new-msg"></Box>

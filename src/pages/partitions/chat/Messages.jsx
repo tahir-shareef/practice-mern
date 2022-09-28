@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Done, DoneAll } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import { formatAMPM } from "../../../helperFunctions/timeformatter";
 
 const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
   const conversationRef = useRef();
@@ -29,7 +30,9 @@ const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
 
                   {isSender ? (
                     <div className="sender-info">
-                      <span className="sender-time">7:13 PM</span>
+                      <span className="sender-time">
+                        {formatAMPM(message.createdAt)}
+                      </span>
                       <div className="delivered-status">
                         {delivered || seen ? (
                           <DoneAll className={seen ? "seen" : ""} />
@@ -39,7 +42,9 @@ const Messages = ({ currentUser, conversation, delivered, seen, loading }) => {
                       </div>
                     </div>
                   ) : (
-                    <span className="time">7:13 PM</span>
+                    <span className="time">
+                      {formatAMPM(message.createdAt)}
+                    </span>
                   )}
                 </Box>
               </Box>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid, IconButton, TextField } from "@mui/material";
 import "./style.scss";
 
-const Footer = (props) => {
+const MessageFooter = (props) => {
   const [text, setText] = useState("");
 
   const sendMessageHandler = () => {
@@ -31,6 +31,7 @@ const Footer = (props) => {
             autoFocus={!text}
             fullWidth
             value={text}
+            autoComplete="off"
             onChange={(e) => setText(e.target.value)}
             onKeyDown={sendWithEnterKey}
             placeholder="Type Message"
@@ -51,4 +52,4 @@ const Footer = (props) => {
   );
 };
 
-export default Footer;
+export default MessageFooter;

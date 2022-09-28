@@ -11,6 +11,7 @@ import {
   Typography,
   Tooltip,
 } from "@mui/material";
+import cookie from "react-cookies";
 import Logout from "@mui/icons-material/Logout";
 
 const ListHeader = (props) => {
@@ -26,7 +27,11 @@ const ListHeader = (props) => {
   const { user } = props;
 
   const logoutHandler = () => {
-    dispatch(logout());
+    // waiting for jwt to remove token
+    cookie.remove("jwt");
+    setTimeout(() => {
+      dispatch(logout());
+    }, 500);
   };
 
   return (

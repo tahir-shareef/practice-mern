@@ -1,4 +1,4 @@
-import { Box, Avatar, IconButton, Typography, Tooltip } from "@mui/material";
+import { Box, Avatar, Typography, Tooltip, Button } from "@mui/material";
 
 const ChatHeader = ({ user }) => {
   const { name, profileImage, status } = user;
@@ -15,21 +15,22 @@ const ChatHeader = ({ user }) => {
           background: "#040046",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Tooltip title="Profile">
-            <IconButton size="small" sx={{ mx: 1, mr: 0.5 }}>
+        <Tooltip title="Profile">
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button>
               <Avatar xs={{ background: "gray" }} src={profileImage}>
                 {name}
               </Avatar>
-            </IconButton>
-          </Tooltip>{" "}
-          <Box>
-            <Typography component={"span"}>{name}</Typography>
-            <Typography component={"p"} lineHeight="0.5" fontSize="10px">
-              {status}
-            </Typography>
+
+              <Box className="chat-header-name">
+                <Typography component={"span"}>{name}</Typography>
+                <Typography component={"p"} lineHeight="0.5" fontSize="10px">
+                  {"online"}
+                </Typography>
+              </Box>
+            </Button>
           </Box>
-        </Box>
+        </Tooltip>
         <Typography sx={{ minWidth: 100 }}>menu</Typography>
       </Box>
     </>

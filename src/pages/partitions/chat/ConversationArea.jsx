@@ -9,7 +9,7 @@ import {
 } from "../../../store/actions/chats";
 import Messages from "./Messages";
 import { Box, Typography } from "@mui/material";
-import Footer from "./Footer";
+import MessageFooter from "./MessageFooter";
 import "./style.scss";
 import { updateMessageToLocal } from "../../../store/reducers/chats-slice";
 
@@ -48,7 +48,6 @@ const ChatArea = () => {
 
   const getUserConversation = () => {
     dispatch(getConversation({ id })).then((res) => {
-      console.log(res);
       setmessageLoading(false);
     });
   };
@@ -57,6 +56,7 @@ const ChatArea = () => {
     const messageObj = {
       message,
       id,
+      createdAt: Date.now(),
     };
     dispatch(sendMessage(messageObj));
     // updating message locally
@@ -84,7 +84,7 @@ const ChatArea = () => {
                 conversation={messages}
                 loading={messageLoading}
               />
-              <Footer onSend={requestMessage} />
+              <MessageFooter onSend={requestMessage} />
             </>
           ) : (
             <Box className="page-center">

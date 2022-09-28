@@ -3,13 +3,17 @@ import axios from "axios";
 import cookie from "react-cookies";
 import { apiUrl } from "../../url";
 
-const jwt = cookie.load("jwt");
+const getAxiosConfig = () => {
+  const jwt = cookie.load("jwt");
 
-const axiosConfig = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${jwt}`,
-  },
+  const axiosConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  };
+
+  return axiosConfig;
 };
 
 export const register = createAsyncThunk("register", async (data, thunkApi) => {
@@ -17,7 +21,7 @@ export const register = createAsyncThunk("register", async (data, thunkApi) => {
     const response = await axios.post(
       apiUrl("/user/register"),
       data,
-      axiosConfig
+      getAxiosConfig()
     );
     return response.data;
   } catch (e) {
@@ -28,7 +32,11 @@ export const register = createAsyncThunk("register", async (data, thunkApi) => {
 
 export const login = createAsyncThunk("login", async (data, thunkApi) => {
   try {
-    const response = await axios.post(apiUrl("/user/login"), data, axiosConfig);
+    const response = await axios.post(
+      apiUrl("/user/login"),
+      data,
+      getAxiosConfig()
+    );
     return response.data;
   } catch (e) {
     const { error } = e.response.data;
@@ -42,7 +50,7 @@ export const checkIfUserCanRegister = createAsyncThunk(
     try {
       const response = await axios.get(
         apiUrl("/user/canregister/" + userName),
-        axiosConfig
+        getAxiosConfig()
       );
       return response.data;
     } catch (e) {
@@ -53,7 +61,7 @@ export const checkIfUserCanRegister = createAsyncThunk(
 
 export const getMe = createAsyncThunk("getMe", async (data, thunkApi) => {
   try {
-    const response = await axios.get(apiUrl("/user/getme"), axiosConfig);
+    const response = await axios.get(apiUrl("/user/getme"), getAxiosConfig());
     return response.data;
   } catch (e) {
     return thunkApi.rejectWithValue();
