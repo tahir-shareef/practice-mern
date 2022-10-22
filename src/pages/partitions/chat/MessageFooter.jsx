@@ -1,24 +1,13 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../../store/reducers/chats-slice";
 import { Box, Grid, IconButton, TextField } from "@mui/material";
 import "./style.scss";
 
-const Footer = () => {
+const MessageFooter = (props) => {
   const [text, setText] = useState("");
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.auth);
-  const { id } = useParams();
 
-  const sendMessageHandler = (e) => {
+  const sendMessageHandler = () => {
     if (text) {
-      const message = {
-        message: text,
-        sender: currentUser.id,
-        id,
-      };
-      dispatch(sendMessage(message));
+      props.onSend(text);
       setText("");
     }
   };
@@ -42,6 +31,7 @@ const Footer = () => {
             autoFocus={!text}
             fullWidth
             value={text}
+            autoComplete="off"
             onChange={(e) => setText(e.target.value)}
             onKeyDown={sendWithEnterKey}
             placeholder="Type Message"
@@ -62,4 +52,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default MessageFooter;

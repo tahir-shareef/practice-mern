@@ -10,9 +10,12 @@ import {
   register,
 } from "../../store/actions/auth";
 import "./style.scss";
+import { useLocation } from "react-router-dom";
 
 const Authentication = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const prevHistoryPath = location.state?.navigateTo;
 
   const initialState = {
     name: "",
@@ -32,9 +35,15 @@ const Authentication = () => {
   const registerHandler = async () => {
     setLoading("Creating your account.. ❤ 🔥");
     try {
-      await dispatch(register(data)).unwrap();
+      await dispatch(
+        register({ ...data, navigateTo: prevHistoryPath })
+      ).unwrap();
     } catch (e) {
-      setError(e);
+      setError(
+        typeof e == "string"
+          ? e
+          : "something went wrong , try Reload your page !"
+      );
       setLoading(false);
     }
   };
@@ -42,9 +51,14 @@ const Authentication = () => {
   const loginHanlder = async () => {
     setLoading("Signing in to your account.. ❤");
     try {
-      await dispatch(login(data)).unwrap();
+      await dispatch(login({ ...data, navigateTo: prevHistoryPath })).unwrap();
     } catch (e) {
-      setError(e);
+      console.log(e);
+      setError(
+        typeof e == "string"
+          ? e
+          : "something went wrong , try Reload your page !"
+      );
       setLoading(false);
     }
   };
