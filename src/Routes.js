@@ -6,17 +6,35 @@ import Authentication from "./pages/auth/Authentication";
 import Home from "./pages/home/Home";
 
 const PageRoutes = () => {
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, prevHistoryState } = useSelector((state) => state.auth);
 
   return (
     <Routes>
-      <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/auth" />}>
+      <Route
+        path="/"
+        element={
+          isLoggedIn ? (
+            <Home />
+          ) : (
+            <Navigate
+              to="/auth"
+              state={{ navigateTo: window.location.pathname, prevHistoryState }}
+            />
+          )
+        }
+      >
         <Route path="chat/:id" element={<ChatArea />} />
       </Route>
       {/* Authentication Routes */}
       <Route
         path="auth"
-        element={isLoggedIn ? <Navigate to="/" /> : <Authentication />}
+        element={
+          isLoggedIn ? (
+            <Navigate to={prevHistoryState || "/"} />
+          ) : (
+            <Authentication />
+          )
+        }
       />
     </Routes>
   );

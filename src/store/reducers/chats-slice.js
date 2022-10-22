@@ -16,11 +16,13 @@ const chat = createSlice({
   extraReducers: (builder) => {
     // Getting chats list for main view from the following fullfills
     builder.addCase(register.fulfilled, (state, action) => {
-      const { chats } = action.payload.user;
+      const { data } = action.payload;
+      const { chats } = data.user;
       state.chats = chats;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const { chats } = action.payload.user;
+      const { data } = action.payload;
+      const { chats } = data.user;
       state.chats = chats;
     });
 

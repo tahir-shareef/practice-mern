@@ -7,22 +7,27 @@ const authSlice = createSlice({
   initialState: {
     isLoggedIn: cookie.load("jwt") !== undefined,
     currentUser: null,
+    prevHistoryState: null,
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
-      const { user, token } = action.payload;
+      const { data, navigateTo } = action.payload;
+      const { user, token } = data;
       state.currentUser = user;
       cookie.save("jwt", token, {
         path: "/",
       });
+      state.prevHistoryState = navigateTo;
       state.isLoggedIn = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const { user, token } = action.payload;
+      const { data, navigateTo } = action.payload;
+      const { user, token } = data;
       state.currentUser = user;
       cookie.save("jwt", token, {
         path: "/",
       });
+      state.prevHistoryState = navigateTo;
       state.isLoggedIn = true;
     });
 

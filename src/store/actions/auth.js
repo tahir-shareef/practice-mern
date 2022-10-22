@@ -17,13 +17,15 @@ const getAxiosConfig = () => {
 };
 
 export const register = createAsyncThunk("register", async (data, thunkApi) => {
+  const navigateTo = data.navigateTo;
+  delete data.navigateTo;
   try {
     const response = await axios.post(
       apiUrl("/user/register"),
       data,
       getAxiosConfig()
     );
-    return response.data;
+    return { data: response.data, navigateTo };
   } catch (e) {
     const { error } = e.response.data;
     return thunkApi.rejectWithValue(error ? error : e);
@@ -31,13 +33,15 @@ export const register = createAsyncThunk("register", async (data, thunkApi) => {
 });
 
 export const login = createAsyncThunk("login", async (data, thunkApi) => {
+  const navigateTo = data.navigateTo;
+  delete data.navigateTo;
   try {
     const response = await axios.post(
       apiUrl("/user/login"),
       data,
       getAxiosConfig()
     );
-    return response.data;
+    return { data: response.data, navigateTo };
   } catch (e) {
     const { error } = e.response.data;
     return thunkApi.rejectWithValue(error ? error : e);
